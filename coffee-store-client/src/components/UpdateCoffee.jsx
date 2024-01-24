@@ -8,7 +8,7 @@ const UpdateCoffee = () => {
     const { _id, name, quantity, supplier, taste, category, details, photo } = coffee;
 
 
-    const handleAddCoffee = event => {
+    const handleUpdateCoffee = event => {
         event.preventDefault();
 
         const form = event.target;
@@ -21,25 +21,25 @@ const UpdateCoffee = () => {
         const details = form.details.value;
         const photo = form.photo.value;
        
-        const newCoffee = {name, quantity, supplier, taste, category, details, photo}
+        const UpdatedCoffee = {name, quantity, supplier, taste, category, details, photo}
 
-        console.log(newCoffee);
+        console.log(UpdatedCoffee);
 
         // send data to the server
-        fetch('http://localhost:5000/coffee', {
-            method: 'POST',
+        fetch(`http://localhost:5000/coffee/${_id}`, {
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(UpdatedCoffee)
         })
         .then(res => res.json())
         .then(data => {
             console.log(data);
-            if(data.insertedId){
+            if(data.modifiedCount > 0){
                 Swal.fire({
                     title: 'Success!',
-                    text: 'User Added Successfully',
+                    text: 'Coffee Updated Successfully',
                     icon: 'success',
                     confirmButtonText: 'Perfect'
                   })
@@ -50,7 +50,7 @@ const UpdateCoffee = () => {
     return (
         <div className=" bg-[#FAF3F0] p-24">
             <h2 className=" text-3xl font-extrabold text-center mb-5"> Update Coffee: {name}</h2>
-            <form onSubmit={handleAddCoffee}>
+            <form onSubmit={handleUpdateCoffee}>
                 {/* Form name and Quantity row*/}
                 <div className=" md:flex mb-5">
                     <div className="form-control md:w-1/2">
@@ -58,7 +58,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Coffee Name</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="name" placeholder="Coffee Name" className="input input-bordered w-full" />
+                            <input type="text" name="name" defaultValue={name} placeholder="Coffee Name" className="input input-bordered w-full" />
                         </label>                        
                     </div>
                     <div className="form-control md: w-1/2 ml-4">
@@ -66,7 +66,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Available Quantity</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="quantity" placeholder="Available Quantity" className="input input-bordered w-full" />
+                            <input type="text" name="quantity" defaultValue={quantity} placeholder="Available Quantity" className="input input-bordered w-full" />
                         </label>                        
                     </div>
 
@@ -78,7 +78,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Supplier Name</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="supplier" placeholder="Supplier Name" className="input input-bordered w-full" />
+                            <input type="text" name="supplier" defaultValue={supplier} placeholder="Supplier Name" className="input input-bordered w-full" />
                         </label>                        
                     </div>
                     <div className="form-control md: w-1/2 ml-4">
@@ -86,7 +86,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Taste</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="taste" placeholder="Taste" className="input input-bordered w-full" />
+                            <input type="text" name="taste" defaultValue={taste} placeholder="Taste" className="input input-bordered w-full" />
                         </label>                        
                     </div>
 
@@ -98,7 +98,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Category</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="category" placeholder="Category" className="input input-bordered w-full" />
+                            <input type="text" name="category" defaultValue={category} placeholder="Category" className="input input-bordered w-full" />
                         </label>                        
                     </div>
                     <div className="form-control md: w-1/2 ml-4">
@@ -106,7 +106,7 @@ const UpdateCoffee = () => {
                             <span className="label-text">Details</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="details" placeholder="Details" className="input input-bordered w-full" />
+                            <input type="text" name="details" defaultValue={details} placeholder="Details" className="input input-bordered w-full" />
                         </label>                        
                     </div>
 
@@ -118,12 +118,12 @@ const UpdateCoffee = () => {
                             <span className="label-text">Photo URL</span>
                         </label>
                         <label className="input-group">
-                            <input type="text" name="photo" placeholder="Photo URL" className="input input-bordered w-full" />
+                            <input type="text" name="photo" defaultValue={photo} placeholder="Photo URL" className="input input-bordered w-full" />
                         </label>                        
                     </div>               
 
                 </div>
-                <input type="submit" value="ADD COFFEE" className=" btn btn-block" />
+                <input type="submit" value="Update Coffee" className=" btn btn-block" />
             </form>
         </div>
     );
