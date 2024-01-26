@@ -1,11 +1,42 @@
+import { useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
+import { data } from "autoprefixer";
 
 
 const SignUp = () => {
 
+    const { createUser } = useContext(AuthContext);
+
+
     const handleSignUp = e => {
         e.preventDefault();
         const form = e.target;
-        console.log(form.email.value, form.password.value);
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(email, password);
+        createUser(email, password)
+            .then(result => {
+                console.log(result.user);
+                // new user has been created
+                const createdAt = result.user?.metadata?.creationTime
+                const user = { email, createdAt };
+                fetch('http://localhost:5173/user', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.insetedId){
+                            console.log('user added to the database');
+                        }
+                    })
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 
     return (
@@ -15,7 +46,7 @@ const SignUp = () => {
                     <h1 className="text-5xl font-bold">Sign Up now!</h1>
                 </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                    <form className="card-body">
+                    <form onSubmit={handleSignUp} className="card-body">
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
