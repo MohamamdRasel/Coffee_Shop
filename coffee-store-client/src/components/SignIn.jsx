@@ -15,28 +15,28 @@ const signIn = () => {
         console.log(email, password);
 
         signInUser(email, password)
-        .then(result => {
-            console.log(result.user);
-            const user ={
-                email,
-                lastLoggedAt: result.user?.metadata?.lastSignInTime
-            }
-            // update last logged at in the database
-            fetch('http://localhost:5000/user', {
-                method: 'PATCH',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(user)
+            .then(result => {
+                console.log(result.user);
+                const user = {
+                    email,
+                    lastLoggedAt: result.user?.metadata?.lastSignInTime
+                }
+                // update last logged at in the database
+                fetch('https://coffee-store-server-gaxx6iryn-mohammads-projects-4e296339.vercel.app/user', {
+                    method: 'PATCH',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                    })
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
+            .catch(error => {
+                console.error(error);
             })
-        })
-        .catch(error => {
-            console.error(error);
-        })
     }
 
     return (
